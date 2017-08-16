@@ -1,0 +1,21 @@
+{% extends 'index.html' %}
+    {% block title %}电影详情
+    {% endblock %}
+
+    {% block content %}
+        <br> </br>
+        <form action="{% url 'start_spider' %}"> <input type="submit"  value="开始爬虫" ></form>
+        <br> </br>
+
+         <form action="{% url 'stop_spider' %}"> <input type="submit"  value="停止爬虫" ></form>
+        <div id="logo_text" style="width: 900px" class="collapse in">
+              <textarea class="form-control" rows="15" cols="125" disabled="disabled" id="run_result">
+                  {% for key, value in menu_dict.items %}
+                    {{ key }}>{{ value }}
+                   {% endfor %}
+              </textarea>
+            </div>
+
+
+    {% endblock %}
+

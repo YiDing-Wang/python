@@ -1,0 +1,39 @@
+{% extends 'index.html' %}
+    {% block title %}电影详情
+    {% endblock %}
+
+    {% block content %}
+            <h1 class="page-header">电影详情</h1>
+            <div class="page-header">
+                <ul class="nav nav-tabs">
+                    <li class="active"><a href="#wj" data-toggle="tab">剧情</a></li>
+                    <li><a href="#uc" data-toggle="tab">喜剧</a></li>
+                    <li><a href="#bc" data-toggle="tab">恐怖片</a></li>
+                </ul>
+                <!-- 面板区 -->
+
+                <div class="tab-content">
+                    {% with module='issue_online' %}
+                    <div role="tabpanel" class="tab-pane active" id="wj">
+                        {% with product_code='wj' %}
+{#                            {% include 'common/common_fileupload.html' %}#}
+                            {% include 'common/common_table.html' %}
+                        {% endwith %}
+                    </div>
+                    <div role="tabpanel" class="tab-pane" id="uc">
+                        {% with product_code='uc' %}
+{#                            {% include 'common/common_fileupload.html' %}#}
+                            {% include 'common/common_table.html' %}
+                        {% endwith %}
+                    </div>
+                    <div role="tabpanel" class="tab-pane" id="bc">
+                        {% with product_code='bc' %}
+{#                            {% include 'common/common_fileupload.html' %}#}
+                            {% include 'common/common_table.html' %}
+                        {% endwith %}
+                    </div>
+                    {% endwith %}
+                </div>
+            </div>
+    {% endblock %}
+

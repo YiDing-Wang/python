@@ -1,0 +1,88 @@
+{% extends 'index.html' %}
+
+
+    {% block title %}用户画像
+    {% endblock %}
+    {% block content %}
+<form method="post" action="{% url 'image_show' %}/?product={{ product_code }}">
+<div class="container timetext">
+    <div class="row clearfix" id="first_text">
+		<div class="col-md-12 column" style="margin-top:15px;">
+			<form role="form">
+				<div class="input-append">
+                    起始时间<input size="16" type="text" name="tdata[date_1]" class="form_datetime" value="" >&nbsp;结束时间&nbsp;
+{#                    <input type="text" size="8" id="mirror_field" value="" class="form_time" name="tdata[time_1]"  />#}
+                    <span class="col-xs-1"></span><input size="16" type="text" name="tdata[date_2]" class="form_datetime" value="" >
+                </div>
+			</form>
+		</div>
+	</div>
+    <div class="row clearfix" id="addtext"></div>
+    <hr>
+    <div class="row clearfix">
+		<div class="col-md-4 column">
+{#			 <button type="button" class="btn active btn-xs btn-primary " id="add_date">增加日期</button> &nbsp;&nbsp;#}
+             <button type="submit" class="btn active btn-xs btn-success active" >提交表单</button>
+		</div>
+	</div>
+</div>
+<img src="../static/123.png">
+</form>
+    {% endblock %}
+ {% block script %}
+          <script src="../static/js/jquery-1.7.2.min.js"></script>
+    <script language="javascript" src="../static/js/bootstrap-datetimepicker.min.js"></script>
+{#    <link rel="stylesheet" href="../static/css/bootstrap.min.css" />#}
+    <link rel="stylesheet" href="../static/css/bootstrap-datetimepicker.min.css" />
+    <style type="text/css">
+        .timetext input{text-align:center;color:blue;}
+    </style>
+     <script type="text/javascript">
+    var initText = $("#first_text").html().replace('请选择：','<button type="button" class="btn active btn-xs btn-warning active del_line">删除此行</button>');
+    var i =2;
+    $("#add_date").click(function(){
+        var re=new RegExp("_1", "g");
+        $("#addtext").append( initText.replace(re, '_'+i));
+        i++;
+        $.initDataPlugin();
+    });
+    $.initDataPlugin = function(){
+        $(".form_datetime").datetimepicker({
+            format: "yyyy-mm-dd hh:ii",
+            language:'zh-CN',
+            autoclose:true,
+            //linkField: "mirror_field",
+            //linkFormat: "hh:ii"
+            minView:'hour',
+            todayBtn:false,
+            showMeridian:false,
+            minuteStep:15,
+            todayBtn:true,
+            todayHighlight:true,
+            initialDate:'2016-08-03 15:30',
+        }).on("hide",function(ev){
+            $(this).siblings(":first").datetimepicker("setStartTime", $(this).val());
+        });
+        $(".form_time").datetimepicker({
+            format: "hh:ii",
+            language:'zh-CN',
+            autoclose:true,
+            todayBtn:false,
+            showMeridian:false,
+            minuteStep:15,
+            startView: 1,
+            minView: 0,
+            maxView: 1,
+        }).on('hide', function(ev){
+            var endt = $(this).val().replace(':','');
+            var stat = $(this).siblings(":first").val().substr(-5);
+            stat = stat.replace(':','');
+            if(endt!='' && stat >= endt){alert('结束时间必须要晚于起始时间!');$(this).val('');return false;}
+        });
+        $(".del_line").click(function(){
+            $(this).parent().parent().remove();
+        });
+    };
+    $.initDataPlugin();
+</script>
+    {% endblock %}

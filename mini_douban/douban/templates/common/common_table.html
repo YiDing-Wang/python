@@ -1,0 +1,81 @@
+            <h2 class="sub-header">电影详情</h2>
+            <link rel="stylesheet" href="../../static/bootstrap-table/dist/bootstrap-table.min.css">
+            <table id="asset_list_table_{{ product_code }}" class="display table  table-hover" data-toggle="table"
+                data-url="{% url 'show_asset_in_table' %}/?product={{ product_code }}"
+                data-method="get"
+                data-pagination="true"
+                data-side-pagination="server"
+                data-page-list="[10, 20, 50, 100, 200]"
+                data-mobile-responsive="true"
+                data-show-refresh="true"
+                data-show-toggle="true"
+                data-page-size=20
+                data-unique-id="asset_id"
+                data-striped="true"
+                >
+              <thead >
+                    <tr>
+                    <th data-field="state" data-checkbox="true"></th>
+                        <th data-field="id" data-align="center" data-sortable="true">ID</th>
+                        <th data-field="movie_name" data-align="center" data-sortable="true">电影名称</th>
+                        <th data-field="score" data-align="center" data-sortable="true">评分</th>
+                        <th data-field="movie_url" data-align="center" data-sortable="true"  data-width="400px">豆瓣url</th>
+                        <th data-field="movie_country" data-sortable="true">产地</th>
+                        <th data-field="created" data-align="center" data-sortable="true"  data-class="asset_name">创建时间</th>
+{#                        <th data-align="center" data-formatter="fun">操作</th>#}
+                    </tr>
+              </thead>
+            </table>
+            <input type="hidden" id="id_input" class="{{ product_code }}"/>
+                <!-- 模态框（Modal） -->
+                <div class="modal fade" id="myModal_{{ product_code }}" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+                    <div class="modal-dialog">
+                        <div class="modal-content">
+                            <div class="modal-header">
+                                <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+                                <h4 class="modal-title" id="myModalLabel">删除确认</h4>
+                            </div>
+                            <div class="modal-body">确定删除该条信息？</div>
+                            <div class="modal-footer">
+                                <button type="button" class="btn btn-default" data-dismiss="modal">关闭</button>
+                                <button type="button" class="btn btn-primary" onclick="deleteRow()">提交</button>
+                            </div>
+                        </div><!-- /.modal-content -->
+                    </div><!-- /.modal -->
+                </div>
+            <script src="../../static/bootstrap-table/dist/bootstrap-table.min.js"></script>
+            <script src="../../static/bootstrap-table/dist/locale/bootstrap-table-zh-CN.min.js"></script>
+            <script src="../../static/js/modal.js"></script>
+            <script>
+{#                function fun(value,row,index){#}
+{#                    a = row.asset_id_invisible#}
+{#                    filename = row.asset_attachment_path#}
+{#                    return "<a href='javascript:;' onclick=\"window.location.href='{% url 'file_download' %}?id=" + a +"'\">下载</a>&nbsp;&nbsp;<a href='javascript:;' onclick='deletedia(" + a + ")'>删除</a>";#}
+{#                }#}
+                function deletedia(id) {
+                    $('#id_input').val(id);
+                    var input_value = $(".tab-pane.active").attr("id");
+                    $('#myModal_'+input_value).modal('show');
+                }
+
+{#                function deleteRow(id){#}
+{#                    var input_value = $(".tab-pane.active").attr("id");#}
+{#                    var id=$.trim($("#id_input").val());#}
+{#                    $.ajax({#}
+{#                        url: "{% url 'delete_attachment' %}" +"?id=" + id + "&module=" + "{{ module }}",#}
+{#                        datatype: 'json',#}
+{#                        method: 'get',#}
+{#                        success: function (data) {#}
+{#                        }#}
+{#                    })#}
+{#                    .always(function() {#}
+{#                        $('#myModal_' + input_value).modal('hide');#}
+{#                        $('#asset_list_table_'+input_value).bootstrapTable(#}
+{#                        "refresh",{#}
+{#                        url:"{% url 'show_asset_in_table' %}/?product=" + input_value + "&module=" + "{{ module }}"#}
+{#                        }#}
+{#                        );#}
+{#                    })#}
+{#                }#}
+
+            </script>

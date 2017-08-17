@@ -19,7 +19,7 @@ except ImportError:
     print '模块导入错误,请使用pip安装,pytesseract依赖以下库：'
     raise SystemExit
 
-conn=MySQLdb.connect(host='10.0.0.0',user='root',passwd='QWERT',db='test_spider',port=33066,charset='utf8')
+conn=MySQLdb.connect(host='10.0.4.117',user='root',passwd='QWERT!@#$%',db='test_spider',port=33066,charset='utf8')
 conn.ping(True)
 cur=conn.cursor()
 

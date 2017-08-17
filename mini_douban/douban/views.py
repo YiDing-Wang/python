@@ -89,50 +89,60 @@ def show_asset_in_table(request):
         return HttpResponse(json.dumps(response_data, cls=DateEncoder))
 
 
+def image_detail(request):
+    return render(request, 'datatime-test.html', {'menu_dict': menu_dict})
+
 # 生成用户画像
 def image_show(request):
-    #
-    # d = path.dirname(__file__)
-    #
-    # conn = MySQLdb.connect(host='10.0.4.117', user='root', passwd='QWERT!@#$%', db='test_spider', port=33066,
-    #                        charset='utf8')
-    # cur = conn.cursor()
-    # cur.execute('SELECT movie_country,count(*) FROM `douban_movie` GROUP BY  movie_country')
-    # dict = {}
-    # for words in cur.fetchall():
-    #     print words[1]
-    #     dict[words[0]] = words[1]
-    # print dict
-    #
-    # alice_coloring = imread(r"D:\untitled2\testpro\111.jpg")
-    # font = r'C:\Windows\Fonts\simfang.ttf'
-    # wc = WordCloud(background_color="white",  # 背景颜色max_words=2000,# 词云显示的最大词数
-    #                font_path=font,
-    #                mask=alice_coloring,  # 设置背景图片
-    #                stopwords=STOPWORDS.add("said"),
-    #                max_font_size=40,  # 字体最大值
-    #                random_state=42)
-    # wc.generate_from_frequencies(dict)
-    #
-    # image_colors = ImageColorGenerator(alice_coloring)
-    # # 以下代码显示图片
-    # plt.imshow(wc)
-    # plt.axis("off")
-    # # 绘制词云
-    # plt.figure()
-    # # recolor wordcloud and show
-    # # we could also give color_func=image_colors directly in the constructor
-    # plt.imshow(wc.recolor(color_func=image_colors))
-    # plt.axis("off")
-    # # 绘制背景图片为颜色的图片
-    # plt.figure()
-    # plt.imshow(alice_coloring, cmap=plt.cm.gray)
-    # plt.axis("off")
-    # #plt.show()
-    # # 保存图片
-    # wc.to_file(path.join(d, "123.png"))
+    d = path.dirname(__file__)
+    d=path.join(d,'\mini\douban\static\img\\')
+    print d
+    conn = MySQLdb.connect(host='10.0.4.117', user='root', passwd='QWERT!@#$%', db='test_spider', port=33066,
+                           charset='utf8')
+    cur = conn.cursor()
+    if request.method == "GET":
+        fromdate=request.GET.get('date1')
+        enddate=request.GET.get('date2')
+        # fromdate=datetime.datetime.ctime(fromdate)
+        # enddate = datetime.datetime.ctime(enddate)
+        sql='SELECT movie_country,count(*) FROM `douban_movie`  where created>"%s" and created<"%s" GROUP BY  movie_country'%(fromdate,enddate)
+        print sql
+        cur.execute(sql)
+        dict = {}
+        for words in cur.fetchall():
+          dict[words[0]] = words[1]
+        alice_coloring = imread(r"D:\untitled2\testpro\111.jpg")
+        font = r'C:\Windows\Fonts\simfang.ttf'
+        wc = WordCloud(background_color="white",  # 背景颜色max_words=2000,# 词云显示的最大词数
+                   font_path=font,
+                   mask=alice_coloring,  # 设置背景图片
+                   stopwords=STOPWORDS.add("said"),
+                   max_font_size=40,  # 字体最大值
+                   random_state=42)
+        wc.generate_from_frequencies(dict)
 
-    return render(request, 'image.html', {'menu_dict': menu_dict})
+        image_colors = ImageColorGenerator(alice_coloring)
+          # 以下代码显示图片
+        plt.imshow(wc)
+        plt.axis("off")
+          # 绘制词云
+        plt.figure()
+    # recolor wordcloud and show
+    # we could also give color_func=image_colors directly in the constructor
+        plt.imshow(wc.recolor(color_func=image_colors))
+        plt.axis("off")
+    # 绘制背景图片为颜色的图片
+        plt.figure()
+        plt.imshow(alice_coloring, cmap=plt.cm.gray)
+        plt.axis("off")
+    #plt.show()
+    # 保存图片
+        img_src=path.join(d,'123.png')
+        print img_src
+        wc.to_file( img_src)
+        menu_dict['img']='123.png'
+
+    return render(request, 'datatime-test.html', {'menu_dict': menu_dict})
 
 
 def spider(request):
